@@ -25,9 +25,9 @@ button {
 .field {
   display: flex;
   flex-direction: column;
-  width: 100px;
   border: solid 1px #000000;
   border-radius: 4px;
+  padding: 20px;
 }
 
 .label,

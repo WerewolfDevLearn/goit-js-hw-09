@@ -21,7 +21,7 @@ refs.sartBtn.setAttribute('disabled', '');
 const options = {
   enableTime: true,
   time_24hr: true,
-  // defaultDate: new Date(),
+  defaultDate: new Date(),
   // minDate: currentDate, //  Не дає вибрати дату меншу за поточну.
   minuteIncrement: 1,
   onClose(selectedDates) {
@@ -41,9 +41,22 @@ const fp = flatpickr('input#datetime-picker', options);
 refs.sartBtn.addEventListener('click', startCD);
 
 function startCD() {
-  interval = setInterval(() => {
-    delta = delta - 1000;
-    console.log(delta);
+  refs.sartBtn.removeEventListener('click', startCD);
+  refs.sartBtn.addEventListener('click', stopCD);
+  refs.sartBtn.textContent = 'Stop';
+  interval = setInterval(decreaseDelta, 1000);
+}
+
+function stopCD() {
+  clearInterval(interval);
+  refs.sartBtn.textContent = 'Start';
+  refs.sartBtn.removeEventListener('click', stopCD);
+  refs.sartBtn.addEventListener('click', startCD);
+}
+
+function decreaseDelta() {
+  delta = delta - 1000;
+  if (delta >= 0) {
     setTimer(refs, delta);
-  }, 1000);
+  }
 }
