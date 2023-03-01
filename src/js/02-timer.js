@@ -41,15 +41,19 @@ const fp = flatpickr('input#datetime-picker', options);
 refs.sartBtn.addEventListener('click', startCD);
 
 function startCD() {
-  refs.sartBtn.setAttribute('disabled', '');
-  refs.sartBtn.removeEventListener('click', startCD);
-  refs.timeInput.setAttribute('disabled', '');
   interval = setInterval(decreaseDelta, 1000);
+  refs.sartBtn.setAttribute('disabled', '');
+  refs.timeInput.setAttribute('disabled', '');
 }
 
 function decreaseDelta() {
   delta = delta - 1000;
   if (delta >= 0) {
     setTimer(refs, delta);
+  }
+  if (delta <= 0) {
+    refs.sartBtn.setAttribute('disabled', '');
+    refs.timeInput.removeAttribute('disabled', '');
+    clearInterval(interval);
   }
 }

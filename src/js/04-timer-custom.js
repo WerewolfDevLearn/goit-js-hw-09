@@ -41,11 +41,11 @@ const fp = flatpickr('input#datetime-picker', options);
 refs.sartBtn.addEventListener('click', startCD);
 
 function startCD() {
+  interval = setInterval(decreaseDelta, 1000);
   refs.timeInput.setAttribute('disabled', '');
   refs.sartBtn.removeEventListener('click', startCD);
   refs.sartBtn.addEventListener('click', stopCD);
   refs.sartBtn.textContent = 'Stop';
-  interval = setInterval(decreaseDelta, 1000);
   // delta = selectedDateMls - currentDateMls;
 }
 
@@ -60,15 +60,20 @@ function stopCD() {
 }
 
 function decreaseDelta() {
-  delta = delta - 1000;
   if (delta >= 0) {
+    delta = delta - 1000;
     setTimer(refs, delta);
     console.log(delta);
   }
-  if (delta === 0) {
+  if (delta <= 0) {
     refs.sartBtn.textContent = 'Start';
     refs.sartBtn.setAttribute('disabled', '');
     refs.timeInput.removeAttribute('disabled', '');
+    delta = 0;
+    setTimer(refs, delta);
+    clearInterval(interval);
+    Notify.info('Sorry. Time ran out.');
+    return;
   }
 }
 
